@@ -1,5 +1,20 @@
+body {
+    background-image: url("../img/bkg.jpg");
+    margin: 0px;
+
+}
+
 .horizontal-block {
     width: 100%;
+}
+
+#title-head {
+    background-color: rgba(0,0,0,0.3);
+    border-bottom: 10px;
+    height: 70px;
+    line-height: 70px;
+    border-bottom-right-radius: 25px;
+    border-bottom-left-radius: 25px;
 }
 
 h1 {
@@ -7,6 +22,10 @@ h1 {
     margin: auto;
     width: 100%;
     font-size: 40px;
+}
+
+.content-body {
+    padding-left: 30px;
 }
 
 p {
@@ -23,9 +42,13 @@ p {
     margin: auto;
 }
 
+.answerLine{
+    font-size: 25px;
+}
+
 @media only screen and (max-width: 476px) {
     body {
-        margin: 5%;
+
     }
 
     button {
@@ -34,6 +57,13 @@ p {
 
     #answersBox > input {
 
+    }
+
+    #optionCreator{
+    }
+
+    #choice-fild-and-buttons{
+        width: 100%;
     }
 
     .answerLine {

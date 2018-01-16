@@ -82,7 +82,6 @@ function startVoting(){
     if(choicesOptions.length <= 1) {
         console.log("Failed to start voting!");
         console.log("Invalid number of choices.");
-        // alert("Invalid number of choices!");
     }
 
     else{
@@ -118,7 +117,6 @@ function startVoting(){
             choiceLine.appendChild(choiceSelection);
             choiceLine.appendChild(choiceLabel);
             document.getElementById('answersBox').appendChild(choiceLine);
-
         }
     }
 }
