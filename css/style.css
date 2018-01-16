@@ -4,10 +4,6 @@ body {
 
 }
 
-.horizontal-block {
-    width: 100%;
-}
-
 #title-head {
     background-color: rgba(0,0,0,0.3);
     border-bottom: 10px;
@@ -15,6 +11,7 @@ body {
     line-height: 70px;
     border-bottom-right-radius: 25px;
     border-bottom-left-radius: 25px;
+    color: white;
 }
 
 h1 {
@@ -24,12 +21,15 @@ h1 {
     font-size: 40px;
 }
 
-.content-body {
-    padding-left: 30px;
-}
-
 p {
     font-size: 20px;
+}
+
+.content-body {
+    padding-left: 30px;
+    padding-right: 30px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 #votArea {
@@ -46,24 +46,28 @@ p {
     font-size: 25px;
 }
 
-@media only screen and (max-width: 476px) {
+#votingList {
+    font-size: 20px;
+    margin-left: 40px;
+}
+
+@media only screen and (max-width: 570px) {
     body {
 
     }
 
     button {
-
+        width:100%;
     }
 
-    #answersBox > input {
-
-    }
-
-    #optionCreator{
-    }
-
-    #choice-fild-and-buttons{
+    p {
         width: 100%;
+        text-align: center;
+    }
+
+    #choiceInput{
+        width: 100%;
+        box-sizing: border-box;
     }
 
     .answerLine {
@@ -71,7 +75,14 @@ p {
         margin: auto;
         text-align: left;
         overflow: hidden;
+        background-color: rgba(255,200, 200, 0.5);
+        margin-bottom: 10px;
+        border-radius: 30px;
     }
 
+    #votingList {
+        text-align: center;
+        margin-left: 0px;
+    }
 
 }
