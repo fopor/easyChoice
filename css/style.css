@@ -12,3 +12,30 @@ h1 {
 p {
     font-size: 20px;
 }
+
+#votArea {
+    display: none;
+}
+
+#winner-box{
+    display: none;
+    text-align: center;
+    margin: auto;
+}
+
+@media only screen and (max-width: 476px) {
+    body {
+        margin: 0px;
+        text-align: center;
+    }
+
+    button {
+        margin: auto;
+        text-align: center;
+        width: 50%;
+    }
+
+    input {
+        width: 50%;
+    }
+}
