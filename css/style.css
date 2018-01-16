@@ -25,24 +25,23 @@ p {
 
 @media only screen and (max-width: 476px) {
     body {
-        margin: 0px;
-        text-align: center;
+        margin: 5%;
     }
 
     button {
+
+    }
+
+    #answersBox > input {
+
+    }
+
+    .answerLine {
+        width: 100%;
         margin: auto;
-        text-align: center;
-        width: 50%;
-    }
-
-    input {
-        width: 50%;
-    }
-
-    #answersBox{
-        display: flex;
-        align-items: flex-start;
         text-align: left;
+        overflow: hidden;
     }
+
 
 }

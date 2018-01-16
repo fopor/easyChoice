@@ -25,6 +25,7 @@ function capitalizeFirstLetter(string) {
 
 function insertOption(){
     let optionText = document.getElementById("choiceInput").value;
+    document.getElementById("choiceInput").value = "";
 
     if (optionText === ""){
         console.log("Ignoring empty insertion...");
@@ -34,8 +35,8 @@ function insertOption(){
         console.log("Formating entry");
         optionText = capitalizeFirstLetter(optionText);
 
-        let valid = true;
         //check if we are putting the same choice twice
+        let valid = true;
         for(let i = 0; (i < choicesOptions.length) && valid; i++){
             console.log(choicesOptions[i].getChoiceName() + "<>" + optionText);
             if(choicesOptions[i].getChoiceName() === optionText){
@@ -51,19 +52,29 @@ function insertOption(){
             // adds the new choice to the vector
             choicesOptions.push(myChoice);
 
-            // updates the choice votingList
-            choicesList = document.getElementById("votingList");
-
-            let choiceListString = choicesOptions[0].getChoiceName();
-
-            for(i = 1; i < choicesOptions.length; i++) {
-                choiceListString = choiceListString + ", " + choicesOptions[i].getChoiceName();
-            }
-
-            choicesList.innerHTML = choiceListString + ".";
+            updateChoiceList();
         }
     }
 
+}
+
+// updates the choice votingList
+function updateChoiceList(){
+    if(choicesOptions.length >= 1) {
+        choicesList = document.getElementById("votingList");
+
+        let choiceListString = choicesOptions[0].getChoiceName();
+
+        for(let i = 1; i < choicesOptions.length; i++) {
+            choiceListString = choiceListString + ", " + choicesOptions[i].getChoiceName();
+        }
+
+        choicesList.innerHTML = choiceListString + ".";
+    }
+
+    else{
+        choicesList.innerHTML = "";
+    }
 }
 
 function startVoting(){
@@ -89,7 +100,10 @@ function startVoting(){
 
             // creates a radio button for the current choices
             let choiceLabel = document.createElement('label');
-            var choiceSelection = document.createElement('input');
+            let choiceSelection = document.createElement('input');
+            let choiceLine = document.createElement('div');
+
+            choiceLine.setAttribute('class', 'answerLine');
 
             // creates the radio selection element
             choiceSelection.setAttribute('type', 'radio');
@@ -97,21 +111,25 @@ function startVoting(){
             //give a name to it
             choiceSelection.setAttribute('name', 'voting-option');
             choiceSelection.setAttribute('id', "id"+(aChoice.getChoiceName()));
-            choiceLabel.innerHTML=aChoice.getChoiceName();
 
             choiceLabel.innerHTML=aChoice.getChoiceName();
-            choiceLabel.setAttribute('for', aChoice.getChoiceName());
+            choiceLabel.setAttribute('for', "id"+(aChoice.getChoiceName()));
 
-            document.getElementById('answersBox').appendChild(choiceSelection);
-            document.getElementById('answersBox').appendChild(choiceLabel);
+            choiceLine.appendChild(choiceSelection);
+            choiceLine.appendChild(choiceLabel);
+            document.getElementById('answersBox').appendChild(choiceLine);
+
         }
     }
 }
 
 
 //TODO implement this to remove last added
-function removeLastItem(){
-    choicesOptions.splice(-1,1);
+function deleteLastInsert(){
+    if(choicesOptions.length >= 1) {
+        choicesOptions.splice(-1,1);
+        updateChoiceList();
+    }
 }
 
 // vote on the selected item
