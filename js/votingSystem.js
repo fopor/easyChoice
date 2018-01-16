@@ -19,35 +19,49 @@ function Choice (name) {
     }
 }
 
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + (string.slice(1)).toLowerCase();
+}
+
 function insertOption(){
     let optionText = document.getElementById("choiceInput").value;
-    console.log("Inserting option...");
 
     if (optionText === ""){
         console.log("Ignoring empty insertion...");
     }
 
     else {
-        console.log("Creating option...");
+        console.log("Formating entry");
+        optionText = capitalizeFirstLetter(optionText);
 
-        // creates a new choice
-        let myChoice = new Choice(optionText);
-
-        //TODO check if we are putting the same choice twice
-
-        // adds the new choice to the vector
-        choicesOptions.push(myChoice);
-
-        // updates the choice votingList
-        choicesList = document.getElementById("votingList");
-
-        let choiceListString = choicesOptions[0].getChoiceName();
-
-        for(let i = 1; i < choicesOptions.length; i++) {
-            choiceListString = choiceListString + ", " + choicesOptions[i].getChoiceName();
+        let valid = true;
+        //check if we are putting the same choice twice
+        for(let i = 0; (i < choicesOptions.length) && valid; i++){
+            console.log(choicesOptions[i].getChoiceName() + "<>" + optionText);
+            if(choicesOptions[i].getChoiceName() === optionText){
+                console.log("Abort insertion: entry already exists!");
+                valid = false;
+            }
         }
 
-        choicesList.innerHTML = choiceListString + ".";
+        if(valid == true) {
+            // creates a new choice
+            let myChoice = new Choice(optionText);
+
+            // adds the new choice to the vector
+            choicesOptions.push(myChoice);
+
+            // updates the choice votingList
+            choicesList = document.getElementById("votingList");
+
+            let choiceListString = choicesOptions[0].getChoiceName();
+
+            for(i = 1; i < choicesOptions.length; i++) {
+                choiceListString = choiceListString + ", " + choicesOptions[i].getChoiceName();
+            }
+
+            choicesList.innerHTML = choiceListString + ".";
+        }
     }
 
 }
