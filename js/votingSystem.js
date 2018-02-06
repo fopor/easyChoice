@@ -2,19 +2,20 @@ choicesOptions = [];
 let totalOfVotes = 0;
 
 // our 'choice' class
-function Choice (name) {
+function Choice(name) {
     this.name = name;
     this.numberOfVotes = 0;
 
-    this.vote = function() {
+    this.vote = function () {
         this.numberOfVotes += 1;
+        console.log("voted on: " + this.name);
     };
 
-    this.getNumberOfVotes = function() {
+    this.getNumberOfVotes = function () {
         return this.numberOfVotes;
     }
 
-    this.getChoiceName = function(){
+    this.getChoiceName = function () {
         return this.name;
     }
 }
@@ -23,11 +24,11 @@ function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + (string.slice(1)).toLowerCase();
 }
 
-function insertOption(){
+function insertOption() {
     let optionText = document.getElementById("choiceInput").value;
     document.getElementById("choiceInput").value = "";
 
-    if (optionText === ""){
+    if (optionText === "") {
         console.log("Ignoring empty insertion...");
     }
 
@@ -37,15 +38,15 @@ function insertOption(){
 
         //check if we are putting the same choice twice
         let valid = true;
-        for(let i = 0; (i < choicesOptions.length) && valid; i++){
+        for (let i = 0; (i < choicesOptions.length) && valid; i++) {
             console.log(choicesOptions[i].getChoiceName() + "<>" + optionText);
-            if(choicesOptions[i].getChoiceName() === optionText){
+            if (choicesOptions[i].getChoiceName() === optionText) {
                 console.log("Abort insertion: entry already exists!");
                 valid = false;
             }
         }
 
-        if(valid == true) {
+        if (valid == true) {
             // creates a new choice
             let myChoice = new Choice(optionText);
 
@@ -55,36 +56,55 @@ function insertOption(){
             updateChoiceList();
         }
     }
-
 }
 
 // updates the choice votingList
-function updateChoiceList(){
-    if(choicesOptions.length >= 1) {
-        choicesList = document.getElementById("votingList");
+function updateChoiceList() {
+    let choicesList = document.getElementById("votingList");
 
-        let choiceListString = choicesOptions[0].getChoiceName();
+    // clears the choice list before rebuilding
+    choicesList.innerHTML = "";
 
-        for(let i = 1; i < choicesOptions.length; i++) {
-            choiceListString = choiceListString + ", " + choicesOptions[i].getChoiceName();
+    if (choicesOptions.length >= 1) {
+        document.getElementById("voting-list-desc").style.display = "block";
+        document.getElementById("vote-start-button").style.display = "block";
+
+        for (let choice of choicesOptions) {
+            let el = document.createElement("LI");
+            let tex = document.createTextNode("  " + choice.getChoiceName());
+            let btn = document.createElement("BUTTON");
+            btn.className = "btn-danger";
+            let t = document.createTextNode("X");
+            btn.onclick = function () {
+                deleteMe(choice.getChoiceName())
+            };
+            btn.appendChild(t);
+            el.className = "list-group-item";
+            el.appendChild(btn);
+            el.appendChild(tex);
+
+            choicesList.appendChild(el);
         }
+    }  
 
-        choicesList.innerHTML = choiceListString + ".";
+    if (choicesOptions.length == 1){
+        document.getElementById("voting-list-desc").style.display = "block"; 
+        document.getElementById("vote-start-button").style.display = "none";
     }
-
-    else{
-        choicesList.innerHTML = "";
+    if (choicesOptions.length == 0){
+        document.getElementById("voting-list-desc").style.display = "none"; 
+        document.getElementById("vote-start-button").style.display = "none";
     }
 }
 
-function startVoting(){
+function startVoting() {
     console.log("Starting voting...");
-    if(choicesOptions.length <= 1) {
+    if (choicesOptions.length <= 1) {
         console.log("Failed to start voting!");
         console.log("Invalid number of choices.");
     }
 
-    else{
+    else {
         console.log("Starting voting...");
 
         // hides the option insert buttons
@@ -93,72 +113,63 @@ function startVoting(){
 
 
         // creates the voting options
-        let aChoice;
-        for(let i = 0; i < choicesOptions.length; i++){
-            aChoice = choicesOptions[i];
+        for (let choice of choicesOptions) {
+            let el = document.createElement("LI");
+            let tex = document.createTextNode("  " + choice.getChoiceName());
+            let btn = document.createElement("BUTTON");
+            btn.className = "btn-success";
+            el.onclick = function () {
+                voteOn(choice.getChoiceName());
+                totalOfVotes += 1;
+                document.getElementById('votCount').innerHTML = String(totalOfVotes);
 
-            // creates a radio button for the current choices
-            let choiceLabel = document.createElement('label');
-            let choiceSelection = document.createElement('input');
-            let choiceLine = document.createElement('div');
+                // visual click feedback
+                el.style.transition = "300ms";
+                el.style.backgroundColor = "grey";
+                setTimeout(function () {
+                    el.style.backgroundColor = "white";
+                  }, 300);
+            };
+            let t = document.createTextNode("Vote");
+            btn.appendChild(t);
+            el.className = "list-group-item";
+            el.appendChild(btn);
+            el.appendChild(tex);
 
-            choiceLine.setAttribute('class', 'answerLine');
-
-            // creates the radio selection element
-            choiceSelection.setAttribute('type', 'radio');
-
-            //give a name to it
-            choiceSelection.setAttribute('name', 'voting-option');
-            choiceSelection.setAttribute('id', "id"+(aChoice.getChoiceName()));
-
-            choiceLabel.innerHTML=aChoice.getChoiceName();
-            choiceLabel.setAttribute('for', "id"+(aChoice.getChoiceName()));
-
-            choiceLine.appendChild(choiceSelection);
-            choiceLine.appendChild(choiceLabel);
-            document.getElementById('answersBox').appendChild(choiceLine);
+            document.getElementById('answersBox').appendChild(el);
         }
     }
 }
 
+function voteOn(info) {
+    let flag = true;
+    let index;
 
-//TODO implement this to remove last added
-function deleteLastInsert(){
-    if(choicesOptions.length >= 1) {
-        choicesOptions.splice(-1,1);
-        updateChoiceList();
+    for (index = 0; index < choicesOptions.length && flag; index++) {
+        if (choicesOptions[index].name === info) flag = false;
     }
+
+    choicesOptions[index - 1].vote();
 }
 
-// vote on the selected item
-function choiceVote() {
-    let matched = false;
-    let itemID;
+function deleteMe(info) {
+    let flag = true;
+    let index;
 
-    // search for the checked item
-    for(let i = 0; i < choicesOptions.length && matched == false; i++){
-        itemID = "id"+choicesOptions[i].getChoiceName();
-        console.log("Searching for match of id>" + itemID);
-        // found the checked item
-        if(document.getElementById(itemID).checked == true){
-                console.log("Voted on " + choicesOptions[i].getChoiceName());
-                matched = true;
-
-                // actually votes and update the Object
-                totalOfVotes++;
-                choicesOptions[i].vote();
-
-                // updates the button name (for the number of votes)
-                document.getElementById("votButton").innerHTML = "Vote (" + totalOfVotes +  ")";
-
-                // unchecks the radio button box
-                document.getElementById(itemID).checked = false;
-        }
+    for (index = 0; index < choicesOptions.length && flag; index++) {
+        if (choicesOptions[index].name === info) flag = false;
     }
+
+
+
+    choicesOptions.splice(index - 1, 1);
+
+
+    updateChoiceList();
 }
 
 // gets the result
-function getResult(){
+function getResult() {
     let winnerName;
     let winnerPoints = -1;
     let currentName;
@@ -166,13 +177,13 @@ function getResult(){
 
     console.log("Getting result!");
 
-    for(let i = 0; i < choicesOptions.length; i++){
-        currentName   = choicesOptions[i].getChoiceName();
+    for (let i = 0; i < choicesOptions.length; i++) {
+        currentName = choicesOptions[i].getChoiceName();
         currentPoints = choicesOptions[i].getNumberOfVotes();
         console.log("Reading: " + currentName + "-" + currentPoints + ".");
 
         //TODO resolve draw
-        if(currentPoints == winnerPoints) {
+        if (currentPoints == winnerPoints) {
             console.log("Draw!");
             winnerName = winnerName + " and " + currentName;
         }
@@ -180,11 +191,14 @@ function getResult(){
         // new winner
         else if (currentPoints > winnerPoints) {
             winnerPoints = currentPoints;
-            winnerName = currentName;
+            winnerName = currentName;   
         }
     }
 
     console.log("Winner>" + winnerName);
+    document.getElementById("optionCreator").style.display = "none";
+    document.getElementById("votArea").style.display = "none";
     document.getElementById("winner-box").style.display = "block";
+    
     document.getElementById("winner-name").innerHTML = winnerName;
 }
