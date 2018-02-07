@@ -132,8 +132,9 @@ function startVoting() {
             };
             let t = document.createTextNode("Vote");
             btn.appendChild(t);
+            // TODO: change this buttons style
+            // el.appendChild(btn);
             el.className = "list-group-item";
-            el.appendChild(btn);
             el.appendChild(tex);
 
             document.getElementById('answersBox').appendChild(el);
