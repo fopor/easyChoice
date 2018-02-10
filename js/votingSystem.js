@@ -209,6 +209,9 @@ function backToInputList() {
             choice.numberOfVotes = 0;
         }
     });
+
+    // show the overlay
+    document.getElementById("overlay").style.display = "block";
 }
 
 function voteOn(info) {
