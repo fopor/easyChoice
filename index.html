@@ -15,22 +15,21 @@
 <body>
     <h1>EasyChoice</h1>
 
-
+    <!-- input options area -->
     <div id="optionCreator">
         <br> <p>Insert option:</p>
         <input id="choiceInput" class="form-control">
         <br>
-        
         <button type="button" class="btn btn-info btn-lg" onclick="insertOption()">Insert</button>
-        
         <br>
         <br>
-
         <div class="list-group-item disabled" id="voting-list-desc">In the list:</div>
         <ul id="votingList" class="list-group"></ul>
         <br>
         <button type="button" class="btn btn-info btn-lg" id="vote-start-button" onclick="startVoting()">Start Voting</button>
     </div>
+
+    <!-- this area shows the options previously inserted -->
     <div id="votArea">
         <div class="list-group-item disabled">Choices list:</div>
         <ul id="answersBox" class="list-group"></ul>
@@ -40,12 +39,12 @@
         </div>
         <button id="getResultButton" type="button" onclick="getResult()" class="btn btn-info btn-lg">Result</button>
     </div>
+
+    <!-- this area shows the winner -->
     <div id='winner-box'>
         <h1>Winner: </h1>
         <h2 id="winner-name"></h2>
     </div>
-
-
 
     <!-- voting system logic -->
     <script src="js/votingSystem.js"></script>

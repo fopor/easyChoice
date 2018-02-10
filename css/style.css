@@ -22,3 +22,7 @@ body {
     display: flex;
     flex-wrap: wrap;
 }
+
+.list-group-item {
+    font-size: 170%;
+}
