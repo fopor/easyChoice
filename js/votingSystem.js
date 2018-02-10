@@ -178,14 +178,37 @@ function removeAllListners(old_element) {
 
 // goes back to the insert page from the voting page
 function backToInputList() {
-    document.getElementById("optionCreator").style.display = "block";
-    document.getElementById("votArea").style.display = "none";
+    console.log("Prepare the pouop up confirmation...");
+        
+    document.getElementById("popup-message").innerHTML = "Going back resets current count";
+    document.getElementById("pop-cancel").innerHTML = "Cancel";
+    document.getElementById("pop-confirm").innerHTML = "Go back";
 
-    // resets the number of votes
-    numberOfVotes = 0;
-    for(choice in choicesOptions) {
-        choice.numberOfVotes = 0;
-    }
+    // add the logic to close the overlay
+    document.getElementById("pop-cancel").addEventListener("click", () => {
+        document.getElementById("overlay").style.display = "none";
+
+        // removes the listner
+        removeAllListners(document.getElementById('overlay'));
+    });
+
+    // confirm the option
+    document.getElementById("pop-confirm").addEventListener("click", () => {
+        document.getElementById("overlay").style.display = "none";
+        
+        // removes the listner
+        removeAllListners(document.getElementById('overlay'));
+
+        document.getElementById("optionCreator").style.display = "block";
+        document.getElementById("votArea").style.display = "none";
+
+        // resets the number of votes
+        totalOfVotes = 0;
+        document.getElementById('votCount').innerHTML = String(totalOfVotes);
+        for(choice in choicesOptions) {
+            choice.numberOfVotes = 0;
+        }
+    });
 }
 
 function voteOn(info) {
