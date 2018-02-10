@@ -31,19 +31,40 @@
 
     <!-- this area shows the options previously inserted -->
     <div id="votArea">
-        <div class="list-group-item disabled">Choices list:</div>
+        <div class="list-group-item disabled">Choices list, click to vote:</div>
         <ul id="answersBox" class="list-group"></ul>
         <br>
         <div class="voteInfo">
             <p>Number of votes: <div id="votCount">0</div></p>
         </div>
+        <button id="getResultButton" type="button" onclick="backToInputList()" class="btn btn-warning btn-lg">Back</button>
         <button id="getResultButton" type="button" onclick="getResult()" class="btn btn-info btn-lg">Result</button>
+    </div>
+
+    <!-- confirmation box showed before some decisions -->
+    <div id='overlay' class="overlay">
+        <div class="outer">
+            <div class="middle">
+                <div class="inner">
+                    <div class="popup">
+                        <h1 id='popup-message'>popup message</h1>
+                        <button id='pop-cancel' class="btn btn-cancel">
+                            Cancel
+                        </button>
+                        <button id='pop-confirm' class="btn btn-primary">
+                            Confirm
+                        </button>
+                        <h1></h1>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- this area shows the winner -->
     <div id='winner-box'>
         <h1>Winner: </h1>
-        <h2 id="winner-name"></h2>
+        <h1 id="winner-name"></h1>
     </div>
 
     <!-- voting system logic -->
