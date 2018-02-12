@@ -205,7 +205,7 @@ function backToInputList() {
         // resets the number of votes
         totalOfVotes = 0;
         document.getElementById('votCount').innerHTML = String(totalOfVotes);
-        for(choice in choicesOptions) {
+        for(choice of choicesOptions) {
             choice.numberOfVotes = 0;
         }
     });
