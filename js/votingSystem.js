@@ -21,7 +21,16 @@ function Choice(name) {
 }
 
 function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + (string.slice(1)).toLowerCase();
+    // return string.charAt(0).toUpperCase() + (string.slice(1)).toLowerCase();
+    let words = string.split(' ');
+    let res = '';
+
+    for(word of words) {
+        word = word.charAt(0).toUpperCase() + (word.slice(1)).toLowerCase();
+        res += ' ' + word;
+    }
+
+    return res.slice(1);
 }
 
 function insertOption() {
