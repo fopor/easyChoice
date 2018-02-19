@@ -21,15 +21,16 @@ function Choice(name) {
 }
 
 function capitalizeFirstLetter(string) {
-    // return string.charAt(0).toUpperCase() + (string.slice(1)).toLowerCase();
     let words = string.split(' ');
     let res = '';
 
+    // cataplize first letter of every word
     for(word of words) {
         word = word.charAt(0).toUpperCase() + (word.slice(1)).toLowerCase();
         res += ' ' + word;
     }
 
+    // removes the first white space
     return res.slice(1);
 }
 
@@ -227,6 +228,18 @@ function voteOn(info) {
     let flag = true;
     let index;
 
+    // gives visual feedback of the vote 
+    document.getElementById("overlay").style.display = "block";
+    document.getElementById("textOnOver").style.display = "block";
+    document.getElementById("popUp").style.display = "none";
+    // removes the vote feedback message
+    setTimeout(function(){ 
+        document.getElementById("textOnOver").style.display = "none";
+        document.getElementById("overlay").style.display = "none";
+        document.getElementById("popUp").style.display = "block";
+    }, 1500);
+    
+    // counts the vote
     for (index = 0; index < choicesOptions.length && flag; index++) {
         if (choicesOptions[index].name === info) flag = false;
     }
