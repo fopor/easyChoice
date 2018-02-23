@@ -1,6 +1,6 @@
 choicesOptions = [];
 let totalOfVotes = 0;
-let secondRound = false;
+let secondRound = true;
 
 let secondRoundButton = document.getElementById("second-round-check");
 

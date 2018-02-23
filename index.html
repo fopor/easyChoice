@@ -33,7 +33,7 @@
         <div class="toggleWrapper">
             Enable second-round
             <label class="switch">  
-                <input type="checkbox" id="second-round-check">
+                <input type="checkbox" id="second-round-check" checked>
                 <span class="slider round"></span>
             </label>
             
@@ -94,7 +94,9 @@
     <!-- this area shows the winner -->
     <div id='winner-box'>
         <h1>Winner: </h1>
-        <h1 id="winner-name"></h1>
+        <div id='winner-name-cont'>
+            <h1 id="winner-name"></h1>
+        </div>
     </div>
 
     <!-- voting system logic -->

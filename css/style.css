@@ -44,8 +44,17 @@ body {
 }
 
 #winner-box {
+    color: black;
+}
+
+#winner-name-cont {
     border-style: solid;
+    color: white;
+    background-color: rgba(100,200,100,.85);
+    border-radius: 15px;
     margin-top: 5%;
+    margin-left: 10%;
+    margin-right: 10%;
 }
 
 /* style used to center the overlay message */
