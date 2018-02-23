@@ -76,3 +76,7 @@ body {
     color: white;
     display: none;
 }
+
+#popButton{
+    display: none;
+}

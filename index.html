@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/togglebutton.css">
     <title>EasyChoice</title>
 </head>
 
@@ -28,6 +29,15 @@
         <ul id="votingList" class="list-group"></ul>
         <br>
         <button type="button" class="btn btn-info btn-lg" id="vote-start-button" onclick="startVoting()">Start Voting</button>
+    
+        <div class="toggleWrapper">
+            Enable second-round
+            <label class="switch">  
+                <input type="checkbox" id="second-round-check">
+                <span class="slider round"></span>
+            </label>
+            
+        </div>
     </div>
 
     <!-- this area shows the options previously inserted -->
@@ -48,15 +58,29 @@
     <div id='overlay' class="overlay">
         <div class="outer">
             <div class="middle">
-                <div id="textOnOver"><h1>
+                <div id="textOnOver">
+                    <h1>
                         VOTE COUNTED
-                    </h1></div>
+                    </h1>
+                </div>
+
+                <div class="inner" id="popButton">
+                    <h1>We had a draw!</h1>
+                    <button id='second-round' class="btn btn-primary">
+                        NEXT ROUND
+                    </button>
+                    <button id='random-now' class="btn btn-primary">
+                        PICK RANDOM
+                    </button>
+                </div>
+
                 <div class="inner" id="popUp">
                     <div class="popup">
                         <h1 id='popup-message'>popup message</h1>
                         <button id='pop-cancel' class="btn btn-cancel">
                             Cancel
                         </button>
+
                         <button id='pop-confirm' class="btn btn-primary">
                             Confirm
                         </button>

@@ -1,5 +1,21 @@
 choicesOptions = [];
 let totalOfVotes = 0;
+let secondRound = false;
+
+let secondRoundButton = document.getElementById("second-round-check");
+
+// add listner to toggle button
+secondRoundButton.addEventListener('change', function() {
+    if(this.checked) {
+        // Checkbox is checked..
+        console.log('Checked!');
+        secondRound = true;
+    } else {
+        // Checkbox is not checked..
+        console.log('Unchecked!');
+        secondRound = false;
+    }
+});
 
 // our 'choice' class
 function Choice(name) {
@@ -25,7 +41,7 @@ function capitalizeFirstLetter(string) {
     let res = '';
 
     // cataplize first letter of every word
-    for(word of words) {
+    for (word of words) {
         word = word.charAt(0).toUpperCase() + (word.slice(1)).toLowerCase();
         res += ' ' + word;
     }
@@ -96,16 +112,16 @@ function updateChoiceList() {
 
             choicesList.appendChild(el);
         }
-    }  
+    }
 
     // dont show the start voting button if we only have one choice
-    if (choicesOptions.length == 1){
-        document.getElementById("voting-list-desc").style.display = "block"; 
+    if (choicesOptions.length == 1) {
+        document.getElementById("voting-list-desc").style.display = "block";
         document.getElementById("vote-start-button").style.display = "none";
     }
 
-    if (choicesOptions.length == 0){
-        document.getElementById("voting-list-desc").style.display = "none"; 
+    if (choicesOptions.length == 0) {
+        document.getElementById("voting-list-desc").style.display = "none";
         document.getElementById("vote-start-button").style.display = "none";
     }
 }
@@ -120,7 +136,7 @@ function startVoting() {
 
     else {
         console.log("Prepare the pouop up confirmation...");
-        
+
         document.getElementById("popup-message").innerHTML = "Start voting?";
         document.getElementById("pop-cancel").innerHTML = "Cancel";
         document.getElementById("pop-confirm").innerHTML = "Confirm";
@@ -136,10 +152,10 @@ function startVoting() {
         // confirm the option
         document.getElementById("pop-confirm").addEventListener("click", () => {
             document.getElementById("overlay").style.display = "none";
-            
+
             // removes the listner
             removeAllListners(document.getElementById('overlay'));
-            
+
             console.log("Starting voting...");
 
             // hides the option insert buttons
@@ -189,7 +205,7 @@ function removeAllListners(old_element) {
 // goes back to the insert page from the voting page
 function backToInputList() {
     console.log("Prepare the pouop up confirmation...");
-        
+
     document.getElementById("popup-message").innerHTML = "Going back resets current count";
     document.getElementById("pop-cancel").innerHTML = "Cancel";
     document.getElementById("pop-confirm").innerHTML = "Go back";
@@ -205,7 +221,7 @@ function backToInputList() {
     // confirm the option
     document.getElementById("pop-confirm").addEventListener("click", () => {
         document.getElementById("overlay").style.display = "none";
-        
+
         // removes the listner
         removeAllListners(document.getElementById('overlay'));
 
@@ -215,7 +231,7 @@ function backToInputList() {
         // resets the number of votes
         totalOfVotes = 0;
         document.getElementById('votCount').innerHTML = String(totalOfVotes);
-        for(choice of choicesOptions) {
+        for (choice of choicesOptions) {
             choice.numberOfVotes = 0;
         }
     });
@@ -233,12 +249,12 @@ function voteOn(info) {
     document.getElementById("textOnOver").style.display = "block";
     document.getElementById("popUp").style.display = "none";
     // removes the vote feedback message
-    setTimeout(function(){ 
+    setTimeout(function () {
         document.getElementById("textOnOver").style.display = "none";
         document.getElementById("overlay").style.display = "none";
         document.getElementById("popUp").style.display = "block";
     }, 1500);
-    
+
     // counts the vote
     for (index = 0; index < choicesOptions.length && flag; index++) {
         if (choicesOptions[index].name === info) flag = false;
@@ -260,6 +276,44 @@ function deleteMe(info) {
     updateChoiceList();
 }
 
+// gets random number within interval
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+// checks if we can second-turn and chose a winner
+function canSecondTurn(drawVector) {
+    // it only makes sense to second turn if there are votes
+    // outside the 'winners'
+    let winnerVotes = 0;
+    let losersVotes = 0;
+    let totalCountedVotes = 0; // TODO: check if we can use the
+                               // global counter
+
+    for(let candidate of choicesOptions) {
+        totalCountedVotes += candidate.getNumberOfVotes();
+    }
+
+    for(let candidate of drawVector) {
+        winnerVotes += candidate.getNumberOfVotes();
+    }
+
+    losersVotes = totalCountedVotes - winnerVotes;
+
+    console.log("Second-round validator:");
+    console.log("total of votes    > " + totalCountedVotes);
+    console.log("winnersVotes      > " + winnerVotes);
+    console.log("votes to relocate > " + losersVotes);
+
+    if(losersVotes > 0) {
+        console.log("We can try a second-round!");
+        return true;
+    }
+
+    console.log("We cant second-round...");
+    return false;
+}
+
 // gets the result
 function getResult() {
     let winnerName;
@@ -270,51 +324,144 @@ function getResult() {
     console.log("Getting result!");
 
     console.log("Prepare the pouop up confirmation...");
-        
-        document.getElementById("popup-message").innerHTML = "Show winner?";
-        document.getElementById("pop-cancel").innerHTML = "Back";
-        document.getElementById("pop-confirm").innerHTML = "Show";
 
-        // add the logic to close the overlay
-        document.getElementById("pop-cancel").addEventListener("click", () => {
-            document.getElementById("overlay").style.display = "none";
+    document.getElementById("popup-message").innerHTML = "Show winner?";
+    document.getElementById("pop-cancel").innerHTML = "Back";
+    document.getElementById("pop-confirm").innerHTML = "Show";
 
-            // removes the listner
-            removeAllListners(document.getElementById('overlay'));
-        });
+    // add the logic to close the overlay
+    document.getElementById("pop-cancel").addEventListener("click", () => {
+        document.getElementById("overlay").style.display = "none";
 
-        // confirm the option
-        document.getElementById("pop-confirm").addEventListener("click", () => {
-            document.getElementById("overlay").style.display = "none";
+        // removes the listner
+        removeAllListners(document.getElementById('overlay'));
+    });
 
-            for (let i = 0; i < choicesOptions.length; i++) {
-                currentName = choicesOptions[i].getChoiceName();
-                currentPoints = choicesOptions[i].getNumberOfVotes();
-                console.log("Reading: " + currentName + "-" + currentPoints + ".");
-        
-                //TODO resolve draw
-                if (currentPoints == winnerPoints) {
-                    console.log("Draw!");
-                    winnerName = winnerName + " and " + currentName;
+    // confirm the option
+    document.getElementById("pop-confirm").addEventListener("click", () => {
+        document.getElementById("overlay").style.display = "none";
+
+        let draw = false;
+        let drawVector = [];
+        let currentWinner;
+
+        for (let i = 0; i < choicesOptions.length; i++) {
+            currentName = choicesOptions[i].getChoiceName();
+            currentPoints = choicesOptions[i].getNumberOfVotes();
+            console.log("Reading: " + currentName + "-" + currentPoints + ".");
+
+            //TODO resolve draw
+            if (currentPoints == winnerPoints) {
+                console.log("Draw!");
+
+                // new draw
+                if (!draw) {
+                    drawVector = [];
+
+                    //pushes the drawing mate
+                    drawVector.push(currentWinner);
                 }
-        
-                // new winner
-                else if (currentPoints > winnerPoints) {
-                    winnerPoints = currentPoints;
-                    winnerName = currentName;   
-                }
+
+                // add people drawing to vector
+                drawVector.push(choicesOptions[i]);
+                console.log(drawVector);
+
+                winnerName = winnerName + " and " + currentName;
+                draw = true;
             }
+
+            // new winner
+            else if (currentPoints > winnerPoints) {
+                winnerPoints = currentPoints;
+                winnerName = currentName;
+                currentWinner = choicesOptions[i];
+                draw = false;
+            }
+        }
+
+        // removes the listners
+        removeAllListners(document.getElementById('overlay'));
+
+        if (draw) {
+            console.log("We had a draw...");
+
+            if(secondRound){
+                // create second round
+                // if there are no votes to reallocate, just RANDOM IT
+                console.log("Checking if our distribution allows to second-round...");
+                
+                if(canSecondTurn(drawVector)){
+                    console.log("Second-turn is possible!");
+                    console.log("Reopening voting...");
+
+                    choicesOptions = drawVector.slice();
+                    totalOfVotes = 0;
+                    document.getElementById('votCount').innerHTML = String(totalOfVotes);
+                    updateChoiceList();
+
+                    console.log("Starting voting...");
+
+                    // re-do the choice list
+                    document.getElementById('answersBox').innerHTML = "";
+                    for (let choice of choicesOptions) {
+                        let el = document.createElement("LI");
+                        let tex = document.createTextNode("  " + choice.getChoiceName());
+                        let btn = document.createElement("BUTTON");
+                        btn.className = "btn-success";
+                        el.onclick = function () {
+                            voteOn(choice.getChoiceName());
+                            totalOfVotes += 1;
+                            document.getElementById('votCount').innerHTML = String(totalOfVotes);
         
+                            // visual click feedback
+                            el.style.transition = "300ms";
+                            el.style.backgroundColor = "grey";
+                            setTimeout(function () {
+                                el.style.backgroundColor = "white";
+                            }, 300);
+                        };
+                        let t = document.createTextNode("Vote");
+                        btn.appendChild(t);
+                        // TODO: change this buttons style
+                        // el.appendChild(btn);
+                        el.className = "list-group-item";
+                        el.appendChild(tex);
+        
+                        document.getElementById('answersBox').appendChild(el);
+                    }
+
+
+                } else {
+                    // just random, no votes to relocate
+                    console.log("Second-turn is not viable!...");
+                    console.log("getting random winner");
+                    
+                    // TODO: refactor this block (same as the one below)
+                    let winnerNumber = getRandomInt(0, drawVector.length - 1);
+                    document.getElementById("winner-name").innerHTML = drawVector[winnerNumber].getChoiceName();
+                    document.getElementById("optionCreator").style.display = "none";
+                    document.getElementById("votArea").style.display = "none";
+                    document.getElementById("winner-box").style.display = "block";
+                }
+
+            } else {
+                // just random a winner
+                let winnerNumber = getRandomInt(0, drawVector.length - 1);
+                document.getElementById("winner-name").innerHTML = drawVector[winnerNumber].getChoiceName();
+                document.getElementById("optionCreator").style.display = "none";
+                document.getElementById("votArea").style.display = "none";
+                document.getElementById("winner-box").style.display = "block";
+            }
+            
+        } else {
             console.log("Winner>" + winnerName);
             document.getElementById("optionCreator").style.display = "none";
             document.getElementById("votArea").style.display = "none";
             document.getElementById("winner-box").style.display = "block";
             document.getElementById("winner-name").innerHTML = winnerName;
-            
-            // removes the listner
-            removeAllListners(document.getElementById('overlay'));
-        });
+        }
+    });
 
-        // show the overlay
-        document.getElementById("overlay").style.display = "block";
+    // show the overlay
+    document.getElementById("overlay").style.display = "block";
 }
