@@ -24,12 +24,16 @@
         <input id="choiceInput" class="form-control">
         <br>
         <button type="button" class="btn btn-info btn-lg" onclick="insertOption()">Insert</button>
+        <button type="button" class="btn btn-warning btn-lg disabled" id='load-button' onclick="loadOption()">Load</button>
         <br>
         <br>
         <div class="list-group-item disabled" id="voting-list-desc">In the list:</div>
         <ul id="votingList" class="list-group"></ul>
         <br>
-        <button type="button" class="btn btn-info btn-lg" id="vote-start-button" onclick="startVoting()">Start Voting</button>
+        <div class="vot-button-wrapper">
+            <button type="button" class="btn btn-danger btn-lg" id="save-list-button"  onclick="saveOption()" >Save List</button>
+            <button type="button" class="btn btn-info btn-lg"   id="vote-start-button" onclick="startVoting()">Start Voting</button>
+        </div>
 
         <div class="toggleWrapper">
             <div class="help-tip">
@@ -65,7 +69,7 @@
         <div class="outer">
             <div class="middle">
                 <div id="textOnOver">
-                    <h1>
+                    <h1 id="alertText">
                         VOTE COUNTED
                     </h1>
                 </div>

@@ -22,6 +22,10 @@ body {
     display: none;
 }
 
+#save-list-button{
+    display: none;
+}
+
 .voteInfo {
     display: flex;
     flex-wrap: wrap;
@@ -93,4 +97,12 @@ body {
 .winner-and-help {
     display: flex;
     flex-wrap: wrap;
+}
+
+.vot-button-wrapper{
+    display: flex;
+}
+
+.vot-button-wrapper > * {
+    margin-right: 3%;
 }
