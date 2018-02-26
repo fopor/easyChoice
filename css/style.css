@@ -22,13 +22,17 @@ body {
     display: none;
 }
 
+#save-list-button{
+    display: none;
+}
+
 .voteInfo {
     display: flex;
     flex-wrap: wrap;
 }
 
 .list-group-item {
-    font-size: 170%;
+    font-size: 160%;
 }
 
 .overlay {
@@ -88,4 +92,17 @@ body {
 
 #popButton{
     display: none;
+}
+
+.winner-and-help {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.vot-button-wrapper{
+    display: flex;
+}
+
+.vot-button-wrapper > * {
+    margin-right: 3%;
 }

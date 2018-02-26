@@ -4,6 +4,26 @@ let secondRound = true;
 
 let secondRoundButton = document.getElementById("second-round-check");
 
+console.log("Reading saved lists...");
+let savedLists = localStorage.getItem('savedLists');
+console.log("Read:");
+console.log(savedLists);
+
+// TODO: add option to delete saved lists
+
+if(savedLists) {
+    // we have a list saved
+    document.getElementById("load-button").classList.remove('disabled');
+
+    // TODO refactor this to not use the variable
+    savedLists = JSON.parse(savedLists);
+
+} else {
+    // we dont have a list saved
+    document.getElementById("load-button").classList.add('disabled');
+    savedLists = {};
+}
+
 // add listner to toggle button
 secondRoundButton.addEventListener('change', function() {
     if(this.checked) {
@@ -16,6 +36,29 @@ secondRoundButton.addEventListener('change', function() {
         secondRound = false;
     }
 });
+
+function loadOption(){
+    //builds the choicesOptions object
+    choicesOptions = [];
+
+    for(loadedChoice of savedLists){
+        console.log(loadedChoice);
+     
+        // creates a new choice
+        let myChoice = new Choice(loadedChoice.name);
+
+        // adds the new choice to the vector
+        choicesOptions.push(myChoice);
+    }
+    
+    updateChoiceList();
+}
+
+function saveOption(){
+    savedLists = choicesOptions;
+    localStorage.setItem('savedLists', JSON.stringify(savedLists));
+    visualFeedback("LIST SAVED");
+}
 
 // our 'choice' class
 function Choice(name) {
@@ -95,6 +138,7 @@ function updateChoiceList() {
     if (choicesOptions.length >= 1) {
         document.getElementById("voting-list-desc").style.display = "block";
         document.getElementById("vote-start-button").style.display = "block";
+        document.getElementById("save-list-button").style.display = "block";
 
         for (let choice of choicesOptions) {
             let el = document.createElement("LI");
@@ -112,17 +156,23 @@ function updateChoiceList() {
 
             choicesList.appendChild(el);
         }
+
+        document.getElementById("load-button").style.display = "none";
     }
 
     // dont show the start voting button if we only have one choice
     if (choicesOptions.length == 1) {
         document.getElementById("voting-list-desc").style.display = "block";
         document.getElementById("vote-start-button").style.display = "none";
+        document.getElementById("save-list-button").style.display = "none";
+        document.getElementById("load-button").style.display = "none";
     }
 
     if (choicesOptions.length == 0) {
         document.getElementById("voting-list-desc").style.display = "none";
         document.getElementById("vote-start-button").style.display = "none";
+        document.getElementById("save-list-button").style.display = "none";
+        document.getElementById("load-button").style.display = "";
     }
 }
 
@@ -240,11 +290,8 @@ function backToInputList() {
     document.getElementById("overlay").style.display = "block";
 }
 
-function voteOn(info) {
-    let flag = true;
-    let index;
-
-    // gives visual feedback of the vote 
+function visualFeedback(text) {
+    document.getElementById("alertText").innerHTML = text;
     document.getElementById("overlay").style.display = "block";
     document.getElementById("textOnOver").style.display = "block";
     document.getElementById("popUp").style.display = "none";
@@ -254,6 +301,14 @@ function voteOn(info) {
         document.getElementById("overlay").style.display = "none";
         document.getElementById("popUp").style.display = "block";
     }, 1500);
+}
+
+function voteOn(info) {
+    let flag = true;
+    let index;
+
+    // gives visual feedback of the vote
+    visualFeedback("VOTE COUNTED");
 
     // counts the vote
     for (index = 0; index < choicesOptions.length && flag; index++) {
@@ -442,6 +497,7 @@ function getResult() {
                     document.getElementById("optionCreator").style.display = "none";
                     document.getElementById("votArea").style.display = "none";
                     document.getElementById("winner-box").style.display = "block";
+                    document.getElementById("help-message-winner").innerHTML = "There were no votes outside the ones on the winners. Second-round was therefore not possible! A winner was chosen randomly.";
                 }
 
             } else {
@@ -451,6 +507,7 @@ function getResult() {
                 document.getElementById("optionCreator").style.display = "none";
                 document.getElementById("votArea").style.display = "none";
                 document.getElementById("winner-box").style.display = "block";
+                document.getElementById("help-message-winner").innerHTML = "Since second-round was disabled, the draw was solved using an adicional random vote.";
             }
             
         } else {
