@@ -442,6 +442,7 @@ function getResult() {
                     document.getElementById("optionCreator").style.display = "none";
                     document.getElementById("votArea").style.display = "none";
                     document.getElementById("winner-box").style.display = "block";
+                    document.getElementById("help-message-winner").innerHTML = "There were no votes outside the ones on the winners. Second-round was therefore not possible! A winner was chosen randomly.";
                 }
 
             } else {
@@ -451,6 +452,7 @@ function getResult() {
                 document.getElementById("optionCreator").style.display = "none";
                 document.getElementById("votArea").style.display = "none";
                 document.getElementById("winner-box").style.display = "block";
+                document.getElementById("help-message-winner").innerHTML = "Since second-round was disabled, the draw was solved using an adicional random vote.";
             }
             
         } else {

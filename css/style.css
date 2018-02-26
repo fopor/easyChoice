@@ -28,7 +28,7 @@ body {
 }
 
 .list-group-item {
-    font-size: 170%;
+    font-size: 160%;
 }
 
 .overlay {
@@ -88,4 +88,9 @@ body {
 
 #popButton{
     display: none;
+}
+
+.winner-and-help {
+    display: flex;
+    flex-wrap: wrap;
 }

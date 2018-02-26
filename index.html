@@ -10,6 +10,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/togglebutton.css">
+    <link rel="stylesheet" href="css/helpbutton.css">
     <title>EasyChoice</title>
 </head>
 
@@ -29,14 +30,19 @@
         <ul id="votingList" class="list-group"></ul>
         <br>
         <button type="button" class="btn btn-info btn-lg" id="vote-start-button" onclick="startVoting()">Start Voting</button>
-    
+
         <div class="toggleWrapper">
+            <div class="help-tip">
+                <p>This button allows the program go to the 2nd half if we have a draw. If disabled, the site choses the winner
+                    randomly.</p>
+            </div>
             Enable second-round
-            <label class="switch">  
+
+            <label class="switch">
                 <input type="checkbox" id="second-round-check" checked>
                 <span class="slider round"></span>
             </label>
-            
+
         </div>
     </div>
 
@@ -93,10 +99,17 @@
 
     <!-- this area shows the winner -->
     <div id='winner-box'>
-        <h1>Winner: </h1>
+        <h1>Winner:</h1>
+
         <div id='winner-name-cont'>
             <h1 id="winner-name"></h1>
         </div>
+
+        <p>
+            <div class="help-tip">
+                <p id='help-message-winner'>This is the candidate with the most votes.</p>
+            </div>
+        </p>
     </div>
 
     <!-- voting system logic -->
